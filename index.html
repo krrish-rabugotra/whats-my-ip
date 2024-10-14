@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's my IP</title>
+    <!-- <link rel="stylesheet" href="./static/style.css" /> -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
+        }
+        /* px, multiple of 4 */
+        
+        #root {
+            min-height: 100vh;
+            background-color: #211f1f;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            /* rem, em, px, vh, vw, lvh, lvw, dvh, dvw */
+        }
+        
+        #target,
+        #timer {
+            color: #fff;
+            padding: 24px 12px;
+            width: min-content;
+            font-family: monospace;
+        }
+        
+        #target {
+            border: 2px dotted #ddd;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        #timer {
+            padding: 12px 6px;
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <p id="target">0.0.0.0</p>
+        <p id="timer">00:00:00</p>
+    </div>
+
+    <script>
+        const timer = document.getElementById("timer");
+        const target = document.getElementById("target");
+
+        // I'll get the client's IP address
+        fetch("https://api.ipify.org?format=json")
+            .then((response) => {
+                if (response.ok) return response.json();
+                throw -1;
+            })
+            .then((json) => {
+                target.innerHTML = json.ip;
+            })
+            .catch((error) => alert("Couldn't fetch user's IP"))
+
+        // I'll get the current date / seconds
+        function updateTimer() {
+            const date = new Date();
+            timer.innerHTML = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        }
+        // Intervals
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+
+</html>
